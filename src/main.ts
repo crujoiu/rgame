@@ -6,8 +6,13 @@ import { AdManager } from "./core/AdManager";
 import { ConsentManager } from "./core/ConsentManager";
 
 const renderer = new Renderer("canvas", GAME_CONFIG.canvasWidth, GAME_CONFIG.canvasHeight);
-const consentManager = new ConsentManager();
-const consent = await consentManager.ensureConsent();
-const adManager = new AdManager(consent);
-adManager.initialize();
-new Game(renderer, adManager);
+
+const bootstrap = async (): Promise<void> => {
+  const consentManager = new ConsentManager();
+  const consent = await consentManager.ensureConsent();
+  const adManager = new AdManager(consent);
+  adManager.initialize();
+  new Game(renderer, adManager);
+};
+
+void bootstrap();

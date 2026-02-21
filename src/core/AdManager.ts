@@ -64,14 +64,14 @@ export class AdManager {
       return;
     }
 
-    const adsWindow = window as Window & {
-      adsbygoogle?: (unknown[] & { requestNonPersonalizedAds?: 0 | 1 });
-    };
+    type AdsByGoogleQueue = unknown[] & { requestNonPersonalizedAds?: 0 | 1 };
+    const adsWindow = window as Window & { adsbygoogle?: AdsByGoogleQueue };
+    const adsQueue = adsWindow.adsbygoogle;
 
     const forceNonPersonalized =
       this.consent.adMode === "non-personalized" || this.consent.doNotSellOrShare;
-    if (Array.isArray(adsWindow.adsbygoogle)) {
-      adsWindow.adsbygoogle.requestNonPersonalizedAds = forceNonPersonalized ? 1 : 0;
+    if (Array.isArray(adsQueue)) {
+      adsQueue.requestNonPersonalizedAds = forceNonPersonalized ? 1 : 0;
     }
 
     const ad = document.createElement("ins");
@@ -85,7 +85,6 @@ export class AdManager {
     this.banner.prepend(ad);
     this.fallback.textContent = "Loading ad...";
 
-    const adsQueue = adsWindow.adsbygoogle;
     if (!Array.isArray(adsQueue)) {
       this.fallback.textContent =
         "AdSense script not loaded. Add the adsbygoogle.js script in index.html.";
