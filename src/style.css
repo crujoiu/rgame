@@ -109,6 +109,37 @@ body {
   z-index: 5;
 }
 
+#ad-banner {
+  position: absolute;
+  left: 50%;
+  bottom: 12px;
+  transform: translateX(-50%);
+  width: min(92%, 520px);
+  min-height: 50px;
+  padding: 8px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.68);
+  color: #e8e8e8;
+  text-align: center;
+  z-index: 6;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 220ms ease, visibility 220ms ease;
+}
+
+#ad-banner.is-visible {
+  pointer-events: auto;
+}
+
+#ad-fallback {
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.35;
+  color: #d7d7d7;
+}
+
 #title {
   position: absolute;
   top: 18%;
@@ -121,6 +152,7 @@ body {
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.65);
   text-align: center;
   pointer-events: none;
+  z-index: 4;
 }
 
 #over {
@@ -134,6 +166,7 @@ body {
   font-weight: bold;
   text-align: center;
   pointer-events: none;
+  z-index: 4;
 }
 
 #warning {
@@ -147,6 +180,7 @@ body {
   text-align: center;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.65);
   pointer-events: none;
+  z-index: 4;
 }
 
 .button {
@@ -175,7 +209,7 @@ body {
 #start {
   position: absolute;
   left: 50%;
-  top: 64%;
+  top: 74%;
   transform: translate(-50%, -50%) scale(0.98);
   width: 100px;
   height: 44px;
@@ -200,6 +234,78 @@ body {
 
 .button.is-visible {
   transform: translate(-50%, -50%) scale(1);
+}
+
+#consent-modal {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.82);
+  z-index: 20;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 220ms ease, visibility 220ms ease;
+}
+
+#consent-modal.is-visible {
+  pointer-events: auto;
+}
+
+.consent-card {
+  width: min(94vw, 560px);
+  background: #111;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 18px 16px;
+  text-align: left;
+  color: #f2f2f2;
+}
+
+.consent-card h2 {
+  margin: 0 0 8px;
+  font-size: 1.2rem;
+}
+
+.consent-card p {
+  margin: 0 0 14px;
+  color: #d0d0d0;
+  line-height: 1.4;
+}
+
+.consent-toggle {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 14px;
+  font-size: 0.92rem;
+}
+
+.consent-toggle input {
+  margin-top: 2px;
+}
+
+.consent-actions {
+  display: grid;
+  gap: 8px;
+}
+
+.consent-btn {
+  width: 100%;
+  padding: 11px 12px;
+  border-radius: 8px;
+  border: 1px solid #4e84bb;
+  background: #1f4d7b;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.consent-btn.is-secondary {
+  border-color: #5b5b5b;
+  background: #252525;
 }
 
 @media (max-width: 520px) {

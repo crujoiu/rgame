@@ -5,6 +5,7 @@ import { Score } from "../entities/Score";
 import { GAME_CONFIG, OBSTACLE_TEMPLATES, ObstacleTemplate } from "./State";
 import { Input } from "./Input";
 import { Renderer } from "./Renderer";
+import { AdManager } from "./AdManager";
 
 type GameElements = {
   cover: HTMLElement;
@@ -21,6 +22,7 @@ export class Game {
   private readonly player: Player;
   private readonly score: Score;
   private readonly input: Input;
+  private readonly adManager: AdManager;
   private readonly elements: GameElements;
 
   private animationFrameId = 0;
@@ -31,7 +33,7 @@ export class Game {
   private nextObstacleDistance: number = GAME_CONFIG.obstacleMinDist;
   private lastPressAt = 0;
 
-  constructor(private readonly renderer: Renderer) {
+  constructor(private readonly renderer: Renderer, adManager: AdManager) {
     this.background = new Background("/assets/layer2.png", 0, 0, GAME_CONFIG.backgroundSpeed);
     this.ground = new Obstacle({
       path: "/assets/base.png",
@@ -59,7 +61,9 @@ export class Game {
       restartButton: this.getButton("restart"),
     };
 
+    this.adManager = adManager;
     this.bindUi();
+    this.adManager.showBanner();
   }
 
   private bindUi(): void {
@@ -74,6 +78,7 @@ export class Game {
 
     this.resetRound();
     this.input.enable();
+    this.adManager.hideBanner();
     this.running = true;
     this.loop();
   }
@@ -113,6 +118,7 @@ export class Game {
     this.showElement(this.elements.over);
     this.showElement(this.elements.restartButton);
     this.hideElement(this.elements.warning);
+    this.adManager.showBanner();
   }
 
   private loop = (): void => {

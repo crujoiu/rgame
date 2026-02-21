@@ -8,9 +8,18 @@
       content="Endless Runner - a browser endless runner game built with TypeScript and Canvas."
     />
     <meta name="theme-color" content="#d9e6f7" />
+    <meta name="google-adsense-account" content="ca-pub-5320668606266595">
+    <style>
+      html,
+      body {
+        margin: 0;
+        background: #000;
+        color: #fff;
+      }
+    </style>
     <title>Endless Runner</title>
   </head>
-  <body>
+  <body data-adsense-client="ca-pub-5320668606266595" data-adsense-banner-slot="1194271249">
     <main class="app-shell">
       <header class="game-header">
         <h1>Endless Runner</h1>
@@ -30,10 +39,39 @@
             <button class="button is-visible" id="start">Start Game</button>
             <button class="button" id="restart">Restart</button>
           </div>
+          <div id="ad-banner" aria-label="Advertisement">
+            <p id="ad-fallback">Ad space</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="consent-modal" aria-label="Privacy consent">
+        <div class="consent-card">
+          <h2>Privacy Choices</h2>
+          <p>
+            We use cookies and similar technologies to serve ads. Under GDPR/CCPA, choose how
+            ads are used.
+          </p>
+          <label class="consent-toggle" for="consent-do-not-sell">
+            <input id="consent-do-not-sell" type="checkbox" />
+            <span>Do not sell or share my personal information (CCPA/CPRA)</span>
+          </label>
+          <div class="consent-actions">
+            <button class="consent-btn" id="consent-accept-personalized">
+              Accept Personalized Ads
+            </button>
+            <button class="consent-btn" id="consent-accept-non-personalized">
+              Accept Non-Personalized Ads
+            </button>
+            <button class="consent-btn is-secondary" id="consent-decline-ads">
+              Continue Without Ads
+            </button>
+          </div>
         </div>
       </section>
       <noscript>This game needs JavaScript enabled to run.</noscript>
     </main>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5320668606266595" crossorigin="anonymous"></script>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
