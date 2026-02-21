@@ -62,8 +62,8 @@ export class Game {
   }
 
   private bindUi(): void {
-    this.elements.startButton.addEventListener("click", () => this.start(), false);
-    this.elements.restartButton.addEventListener("click", () => this.start(), false);
+    this.bindPress(this.elements.startButton, () => this.start());
+    this.bindPress(this.elements.restartButton, () => this.start());
   }
 
   start(): void {
@@ -238,5 +238,18 @@ export class Game {
 
   private hideElement(element: HTMLElement): void {
     element.classList.remove("is-visible");
+  }
+
+  private bindPress(button: HTMLButtonElement, handler: () => void): void {
+    button.addEventListener("click", handler, false);
+    button.addEventListener("pointerup", handler, false);
+    button.addEventListener(
+      "touchend",
+      (event: TouchEvent) => {
+        event.preventDefault();
+        handler();
+      },
+      { passive: false },
+    );
   }
 }
