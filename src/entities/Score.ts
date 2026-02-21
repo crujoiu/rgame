@@ -12,10 +12,14 @@ export class Score {
   }
 
   draw(ctx: CanvasRenderingContext2D): void {
-    ctx.font = "bold 14px sans-serif";
-    ctx.fillStyle = "black";
-    ctx.fillText(`HI: ${this.highScore}`, this.x - 110, this.y);
-    ctx.fillText(`SCORE: ${this.value}`, this.x, this.y);
+    ctx.font = "800 18px \"Baloo 2\", \"Trebuchet MS\", sans-serif";
+    ctx.strokeStyle = "rgba(8, 40, 78, 0.95)";
+    ctx.lineWidth = 5;
+    ctx.fillStyle = "#fffdf0";
+    ctx.strokeText(`BEST: ${this.highScore}`, this.x - 140, this.y);
+    ctx.fillText(`BEST: ${this.highScore}`, this.x - 140, this.y);
+    ctx.strokeText(`SCORE: ${this.value}`, this.x + 4, this.y);
+    ctx.fillText(`SCORE: ${this.value}`, this.x + 4, this.y);
   }
 
   update(obstacles: Obstacle[], playerX: number): void {

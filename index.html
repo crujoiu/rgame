@@ -7,69 +7,47 @@
       name="description"
       content="Endless Runner - a browser endless runner game built with TypeScript and Canvas."
     />
-    <meta name="theme-color" content="#d9e6f7" />
+    <meta name="theme-color" content="#73d8ff" />
     <link rel="icon" type="image/png" href="/assets/speeder.png" />
     <meta name="google-adsense-account" content="ca-pub-5320668606266595">
     <style>
+      @import url("https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&display=swap");
       html,
       body {
         margin: 0;
-        background: #000;
-        color: #fff;
+        background: #73d8ff;
+        color: #0d2c54;
       }
     </style>
-    <title>Endless Runner</title>
+    <title>Rainbow Dash Run</title>
   </head>
   <body data-adsense-client="ca-pub-5320668606266595" data-adsense-banner-slot="1194271249">
     <main class="app-shell">
       <header class="game-header">
-        <h1>Endless Runner</h1>
-        <p>Endless runner challenge. Press Space or tap to jump. Double-tap to jump higher.</p>
+        <h1>Rainbow Dash Run</h1>
+        <p>A cheerful dash game for kids. Tap or press Space to jump. Double-tap for a super jump.</p>
       </header>
 
       <section class="game-card" aria-label="Game area">
         <div id="container">
           <canvas id="canvas" aria-label="Game canvas"></canvas>
           <div id="cover"></div>
-          <div id="title" class="is-visible">Endless Runner</div>
-          <div id="over">Game Over</div>
+          <div id="title" class="is-visible">Rainbow Dash Run</div>
+          <div id="over">Oops! Let's Try Again</div>
           <p id="warning" class="is-visible">
-            Press SPACE or TAP to JUMP. DOUBLE-TAP or DOUBLE-SPACE to jump higher.
+            Tap or press SPACE to jump.
+            Double-tap or press SPACE twice for a super jump.
           </p>
           <div id="menu">
-            <button class="button is-visible" id="start">Start Game</button>
-            <button class="button" id="restart">Restart</button>
+            <button class="button is-visible" id="start">Play</button>
+            <button class="button" id="restart">Play Again</button>
           </div>
           <div id="ad-banner" aria-label="Advertisement">
-            <p id="ad-fallback">Ad space</p>
+            <p id="ad-fallback">Sponsored message</p>
           </div>
         </div>
       </section>
 
-      <section id="consent-modal" aria-label="Privacy consent">
-        <div class="consent-card">
-          <h2>Privacy Choices</h2>
-          <p>
-            We use cookies and similar technologies to serve ads. Under GDPR/CCPA, choose how
-            ads are used.
-          </p>
-          <label class="consent-toggle" for="consent-do-not-sell">
-            <input id="consent-do-not-sell" type="checkbox" />
-            <span>Do not sell or share my personal information (CCPA/CPRA)</span>
-          </label>
-          <div class="consent-actions">
-            <button class="consent-btn" id="consent-accept-personalized">
-              Accept Personalized Ads
-            </button>
-            <button class="consent-btn" id="consent-accept-non-personalized">
-              Accept Non-Personalized Ads
-            </button>
-            <button class="consent-btn is-secondary" id="consent-decline-ads">
-              Continue Without Ads
-            </button>
-          </div>
-        </div>
-      </section>
       <noscript>This game needs JavaScript enabled to run.</noscript>
     </main>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5320668606266595" crossorigin="anonymous"></script>

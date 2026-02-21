@@ -1,9 +1,6 @@
-import type { ConsentPreferences } from "./ConsentManager";
-
 export class AdManager {
   private readonly banner: HTMLElement;
   private readonly fallback: HTMLElement;
-  private readonly consent: ConsentPreferences;
   private readonly adsEnabled: boolean;
   private readonly client: string;
   private readonly slot: string;
@@ -11,10 +8,9 @@ export class AdManager {
   private canShowBanner = false;
   private adMounted = false;
 
-  constructor(consent: ConsentPreferences) {
+  constructor() {
     this.banner = this.getElement("ad-banner");
     this.fallback = this.getElement("ad-fallback");
-    this.consent = consent;
 
     const host = document.body;
     this.client = host.dataset.adsenseClient ?? "";
@@ -27,11 +23,6 @@ export class AdManager {
       return;
     }
     this.initialized = true;
-
-    if (this.consent.adMode === "declined") {
-      this.fallback.textContent = "Ads disabled by your consent preference.";
-      return;
-    }
 
     if (!this.adsEnabled) {
       this.fallback.textContent = "Ad space (set data-adsense-client and data-adsense-banner-slot).";
@@ -64,15 +55,9 @@ export class AdManager {
       return;
     }
 
-    type AdsByGoogleQueue = unknown[] & { requestNonPersonalizedAds?: 0 | 1 };
+    type AdsByGoogleQueue = unknown[];
     const adsWindow = window as Window & { adsbygoogle?: AdsByGoogleQueue };
     const adsQueue = adsWindow.adsbygoogle;
-
-    const forceNonPersonalized =
-      this.consent.adMode === "non-personalized" || this.consent.doNotSellOrShare;
-    if (Array.isArray(adsQueue)) {
-      adsQueue.requestNonPersonalizedAds = forceNonPersonalized ? 1 : 0;
-    }
 
     const ad = document.createElement("ins");
     ad.className = "adsbygoogle";
@@ -87,7 +72,7 @@ export class AdManager {
 
     if (!Array.isArray(adsQueue)) {
       this.fallback.textContent =
-        "AdSense script not loaded. Add the adsbygoogle.js script in index.html.";
+        "Ads unavailable (blocked by browser privacy settings or an ad blocker).";
       return;
     }
 
