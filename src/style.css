@@ -239,9 +239,9 @@ body {
 }
 
 .button {
-  width: 154px;
-  height: 64px;
-  font-size: 1.1rem;
+  width: 144px;
+  height: 58px;
+  font-size: 1rem;
   border-radius: 18px;
   font-weight: 800;
   border: 2px solid #ffffff;
@@ -270,11 +270,11 @@ body {
 #start {
   position: absolute;
   left: 50%;
-  top: 74%;
+  top: 64%;
   transform: translate(-50%, -50%) scale(0.98);
-  width: 142px;
-  height: 56px;
-  font-size: 1rem;
+  width: 136px;
+  height: 54px;
+  font-size: 0.98rem;
 }
 
 #restart {
@@ -282,9 +282,9 @@ body {
   left: 50%;
   top: 52%;
   transform: translate(-50%, -50%) scale(0.98);
-  width: 156px;
-  height: 58px;
-  font-size: 1.02rem;
+  width: 146px;
+  height: 54px;
+  font-size: 0.98rem;
 }
 
 .is-visible {
@@ -326,8 +326,12 @@ body {
 
   #start,
   #restart {
-    width: 132px;
-    height: 52px;
-    font-size: 0.96rem;
+    width: 112px;
+    height: 36px;
+    font-size: 0.92rem;
+  }
+
+  #start {
+    top: 82%;
   }
 }
