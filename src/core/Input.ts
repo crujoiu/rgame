@@ -13,6 +13,8 @@ export class Input {
 
     window.addEventListener("keydown", this.handleKeyDown, false);
     this.target.addEventListener("pointerdown", this.handlePointerDown, { passive: false });
+    this.target.addEventListener("touchstart", this.handleTouchStart, { passive: false });
+    this.target.addEventListener("mousedown", this.handleMouseDown, false);
     this.active = true;
   }
 
@@ -23,6 +25,8 @@ export class Input {
 
     window.removeEventListener("keydown", this.handleKeyDown, false);
     this.target.removeEventListener("pointerdown", this.handlePointerDown);
+    this.target.removeEventListener("touchstart", this.handleTouchStart);
+    this.target.removeEventListener("mousedown", this.handleMouseDown);
     this.active = false;
   }
 
@@ -36,6 +40,16 @@ export class Input {
   };
 
   private readonly handlePointerDown = (event: PointerEvent): void => {
+    event.preventDefault();
+    this.onJump();
+  };
+
+  private readonly handleTouchStart = (event: TouchEvent): void => {
+    event.preventDefault();
+    this.onJump();
+  };
+
+  private readonly handleMouseDown = (event: MouseEvent): void => {
     event.preventDefault();
     this.onJump();
   };
