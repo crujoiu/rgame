@@ -17,8 +17,8 @@ export class Background {
     this.x = 0;
   }
 
-  update(): void {
-    this.x -= this.speed;
+  update(timeScale: number): void {
+    this.x -= this.speed * timeScale;
     if (this.x + this.image.width < 0) {
       this.x = 0;
     }

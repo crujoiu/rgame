@@ -31,7 +31,8 @@ export class Game {
 
   private animationFrameId = 0;
   private running = false;
-  private frame = 0;
+  private elapsedMs = 0;
+  private lastFrameTime = 0;
   private obstacles: Obstacle[] = [];
   private obstacleTemplates: ObstacleTemplate[] = [];
   private nextObstacleDistance: number = GAME_CONFIG.obstacleMinDist;
@@ -85,11 +86,12 @@ export class Game {
     this.input.enable();
     this.adControls.hideBanner();
     this.running = true;
-    this.loop();
+    this.lastFrameTime = performance.now();
+    this.animationFrameId = window.requestAnimationFrame(this.loop);
   }
 
   private resetRound(): void {
-    this.frame = 0;
+    this.elapsedMs = 0;
     this.obstacles = [];
     this.obstacleTemplates = OBSTACLE_TEMPLATES.map((template) => ({ ...template }));
     this.nextObstacleDistance = this.randomInt(
@@ -128,24 +130,28 @@ export class Game {
     this.adControls.showBanner();
   }
 
-  private loop = (): void => {
+  private loop = (now: number): void => {
     if (!this.running) {
       return;
     }
 
-    this.update();
+    const elapsed = now - this.lastFrameTime;
+    this.lastFrameTime = now;
+    const timeScale = Math.min(Math.max(elapsed / (1000 / 60), 0.5), 2);
+
+    this.update(elapsed, timeScale);
     this.render();
     this.animationFrameId = window.requestAnimationFrame(this.loop);
   };
 
-  private update(): void {
-    this.frame += 1;
-    this.background.update();
-    this.player.update();
+  private update(elapsedMs: number, timeScale: number): void {
+    this.elapsedMs += elapsedMs;
+    this.background.update(timeScale);
+    this.player.update(timeScale);
 
     this.manageObstacles();
     for (const obstacle of this.obstacles) {
-      obstacle.move();
+      obstacle.move(timeScale);
     }
 
     this.score.update(this.obstacles, this.player.posX);
@@ -165,7 +171,9 @@ export class Game {
       }
     }
 
-    this.setWarningVisible(this.frame > 0 && this.frame < GAME_CONFIG.warningFrames);
+    this.setWarningVisible(
+      this.elapsedMs > 0 && this.elapsedMs < GAME_CONFIG.warningFrames * (1000 / 60),
+    );
   }
 
   private render(): void {

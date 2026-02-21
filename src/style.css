@@ -356,4 +356,8 @@ body {
   #start {
     top: 82%;
   }
+
+  #restart {
+    top: 60%;
+  }
 }

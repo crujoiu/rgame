@@ -62,10 +62,10 @@ export class Player {
     this.anim = this.jumpAnim;
   }
 
-  update(): void {
+  update(timeScale: number): void {
     if (!this.onGround) {
-      this.velocityY = Math.min(this.velocityY + GRAVITY, MAX_FALL_SPEED);
-      this.posY += this.velocityY;
+      this.velocityY = Math.min(this.velocityY + GRAVITY * timeScale, MAX_FALL_SPEED);
+      this.posY += this.velocityY * timeScale;
 
       if (this.velocityY > 0) {
         this.anim = this.landAnim;

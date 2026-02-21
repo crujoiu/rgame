@@ -86,8 +86,8 @@ export class Obstacle {
     );
   }
 
-  move(): void {
-    this.x -= this.speed;
+  move(timeScale: number): void {
+    this.x -= this.speed * timeScale;
   }
 
   getHitbox(): Hitbox {
