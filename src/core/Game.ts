@@ -29,6 +29,7 @@ export class Game {
   private obstacles: Obstacle[] = [];
   private obstacleTemplates: ObstacleTemplate[] = [];
   private nextObstacleDistance: number = GAME_CONFIG.obstacleMinDist;
+  private lastPressAt = 0;
 
   constructor(private readonly renderer: Renderer) {
     this.background = new Background("/assets/layer2.png", 0, 0, GAME_CONFIG.backgroundSpeed);
@@ -241,26 +242,16 @@ export class Game {
   }
 
   private bindPress(button: HTMLButtonElement, handler: () => void): void {
-    button.addEventListener(
-      "pointerdown",
-      (event: PointerEvent) => {
-        event.preventDefault();
-        handler();
-      },
-      false,
-    );
+    const runOnce = (): void => {
+      const now = Date.now();
+      if (now - this.lastPressAt < 300) {
+        return;
+      }
+      this.lastPressAt = now;
+      handler();
+    };
 
-    button.addEventListener(
-      "click",
-      (event: MouseEvent) => {
-        // Fallback for browsers that do not support Pointer Events.
-        if (window.PointerEvent) {
-          return;
-        }
-        event.preventDefault();
-        handler();
-      },
-      false,
-    );
+    button.addEventListener("click", runOnce, false);
+    button.addEventListener("touchstart", runOnce, { passive: true });
   }
 }
