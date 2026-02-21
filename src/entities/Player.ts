@@ -1,5 +1,5 @@
 import { Animation } from "./Animation";
-import { Hitbox, Obstacle } from "./Obstacle";
+import { Obstacle } from "./Obstacle";
 import { SpriteSheet } from "./SpriteSheet";
 
 const JUMP_VELOCITY = -12.2;
@@ -20,6 +20,10 @@ export class Player {
   private velocityY = 0;
   private onGround = true;
   private canUseDoubleTapBoost = false;
+  private static readonly HITBOX_INSET_LEFT_RATIO = 0.28;
+  private static readonly HITBOX_INSET_RIGHT_RATIO = 0.24;
+  private static readonly HITBOX_INSET_TOP_RATIO = 0.16;
+  private static readonly HITBOX_INSET_BOTTOM_RATIO = 0.08;
 
   constructor(posX: number, posY: number, private readonly groundY: number) {
     this.posX = posX;
@@ -78,37 +82,20 @@ export class Player {
   }
 
   crashed(obstacle: Obstacle): boolean {
-    const playerHitbox = this.getHitbox();
-    const obstacleHitbox = obstacle.getHitbox();
-    return this.intersects(playerHitbox, obstacleHitbox);
+    const insetLeft = this.width * Player.HITBOX_INSET_LEFT_RATIO;
+    const insetRight = this.width * Player.HITBOX_INSET_RIGHT_RATIO;
+    const insetTop = this.height * Player.HITBOX_INSET_TOP_RATIO;
+    const insetBottom = this.height * Player.HITBOX_INSET_BOTTOM_RATIO;
+
+    const left = this.posX + insetLeft;
+    const top = this.posY + insetTop;
+    const right = this.posX + this.width - insetRight;
+    const bottom = this.posY + this.height - insetBottom;
+    return obstacle.collidesWithRect(left, top, right, bottom);
   }
 
   draw(ctx: CanvasRenderingContext2D): void {
     this.anim.draw(ctx, this.posX, this.posY);
     this.anim.update();
-  }
-
-  private getHitbox(): Hitbox {
-    // Use a torso-centric hitbox to avoid punishing collisions on thin limbs.
-    const insetLeft = this.width * 0.28;
-    const insetRight = this.width * 0.24;
-    const insetTop = this.height * 0.16;
-    const insetBottom = this.height * 0.08;
-
-    return {
-      left: this.posX + insetLeft,
-      top: this.posY + insetTop,
-      right: this.posX + this.width - insetRight,
-      bottom: this.posY + this.height - insetBottom,
-    };
-  }
-
-  private intersects(a: Hitbox, b: Hitbox): boolean {
-    return !(
-      a.right <= b.left ||
-      a.left >= b.right ||
-      a.bottom <= b.top ||
-      a.top >= b.bottom
-    );
   }
 }

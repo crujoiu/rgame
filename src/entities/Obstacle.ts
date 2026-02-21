@@ -1,3 +1,5 @@
+import { getCachedImage } from "../core/AssetCache";
+
 export type ObstacleOptions = {
   path: string;
   x: number;
@@ -29,15 +31,16 @@ export class Obstacle {
   readonly h: number;
   speed: number;
   readonly scaleFactor: number;
+  readonly scaledW: number;
+  readonly scaledH: number;
+  readonly newYPoz: number;
   hasPassed = false;
   private readonly image: HTMLImageElement;
   private readonly drawAsGround: boolean;
-  private readonly hitboxInset: {
-    left: number;
-    right: number;
-    top: number;
-    bottom: number;
-  };
+  private readonly hitboxOffsetLeft: number;
+  private readonly hitboxOffsetRight: number;
+  private readonly hitboxOffsetTop: number;
+  private readonly hitboxOffsetBottom: number;
 
   constructor(options: ObstacleOptions) {
     this.x = options.x;
@@ -45,29 +48,23 @@ export class Obstacle {
     this.w = options.w;
     this.h = options.h;
     this.scaleFactor = options.scaleFactor ?? 1;
+    this.scaledW = this.w / this.scaleFactor;
+    this.scaledH = this.h / this.scaleFactor;
+    this.newYPoz = this.y - this.scaledH;
     this.speed = options.speed ?? 5;
     this.drawAsGround = options.drawAsGround ?? false;
-    this.hitboxInset = options.hitboxInset ?? {
+    const hitboxInset = options.hitboxInset ?? {
       left: 0.14,
       right: 0.14,
       top: 0.12,
       bottom: 0.04,
     };
+    this.hitboxOffsetLeft = this.scaledW * hitboxInset.left;
+    this.hitboxOffsetRight = this.scaledW * hitboxInset.right;
+    this.hitboxOffsetTop = this.scaledH * hitboxInset.top;
+    this.hitboxOffsetBottom = this.scaledH * hitboxInset.bottom;
 
-    this.image = new Image();
-    this.image.src = options.path;
-  }
-
-  get scaledW(): number {
-    return this.w / this.scaleFactor;
-  }
-
-  get scaledH(): number {
-    return this.h / this.scaleFactor;
-  }
-
-  get newYPoz(): number {
-    return this.y - this.scaledH;
+    this.image = getCachedImage(options.path);
   }
 
   draw(ctx: CanvasRenderingContext2D): void {
@@ -94,16 +91,25 @@ export class Obstacle {
   }
 
   getHitbox(): Hitbox {
-    const insetLeft = this.scaledW * this.hitboxInset.left;
-    const insetRight = this.scaledW * this.hitboxInset.right;
-    const insetTop = this.scaledH * this.hitboxInset.top;
-    const insetBottom = this.scaledH * this.hitboxInset.bottom;
-
     return {
-      left: this.x + insetLeft,
-      top: this.newYPoz + insetTop,
-      right: this.x + this.scaledW - insetRight,
-      bottom: this.newYPoz + this.scaledH - insetBottom,
+      left: this.x + this.hitboxOffsetLeft,
+      top: this.newYPoz + this.hitboxOffsetTop,
+      right: this.x + this.scaledW - this.hitboxOffsetRight,
+      bottom: this.newYPoz + this.scaledH - this.hitboxOffsetBottom,
     };
+  }
+
+  collidesWithRect(left: number, top: number, right: number, bottom: number): boolean {
+    const obstacleLeft = this.x + this.hitboxOffsetLeft;
+    const obstacleTop = this.newYPoz + this.hitboxOffsetTop;
+    const obstacleRight = this.x + this.scaledW - this.hitboxOffsetRight;
+    const obstacleBottom = this.newYPoz + this.scaledH - this.hitboxOffsetBottom;
+
+    return !(
+      right <= obstacleLeft ||
+      left >= obstacleRight ||
+      bottom <= obstacleTop ||
+      top >= obstacleBottom
+    );
   }
 }

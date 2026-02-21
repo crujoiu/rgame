@@ -1,3 +1,5 @@
+import { getCachedImage } from "../core/AssetCache";
+
 export class SpriteSheet {
   readonly frameW: number;
   readonly frameH: number;
@@ -8,7 +10,6 @@ export class SpriteSheet {
     this.frameW = frameW;
     this.frameH = frameH;
     this.frames = frames;
-    this.image = new Image();
-    this.image.src = path;
+    this.image = getCachedImage(path);
   }
 }

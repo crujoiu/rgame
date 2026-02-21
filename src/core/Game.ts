@@ -5,7 +5,11 @@ import { Score } from "../entities/Score";
 import { GAME_CONFIG, OBSTACLE_TEMPLATES, ObstacleTemplate } from "./State";
 import { Input } from "./Input";
 import { Renderer } from "./Renderer";
-import { AdManager } from "./AdManager";
+
+type AdControls = {
+  showBanner(): void;
+  hideBanner(): void;
+};
 
 type GameElements = {
   cover: HTMLElement;
@@ -22,7 +26,7 @@ export class Game {
   private readonly player: Player;
   private readonly score: Score;
   private readonly input: Input;
-  private readonly adManager: AdManager;
+  private readonly adControls: AdControls;
   private readonly elements: GameElements;
 
   private animationFrameId = 0;
@@ -32,8 +36,9 @@ export class Game {
   private obstacleTemplates: ObstacleTemplate[] = [];
   private nextObstacleDistance: number = GAME_CONFIG.obstacleMinDist;
   private lastPressAt = 0;
+  private warningVisible = false;
 
-  constructor(private readonly renderer: Renderer, adManager: AdManager) {
+  constructor(private readonly renderer: Renderer, adControls: AdControls) {
     this.background = new Background("/assets/layer2.png", 0, 0, GAME_CONFIG.backgroundSpeed);
     this.ground = new Obstacle({
       path: "/assets/base.png",
@@ -61,9 +66,9 @@ export class Game {
       restartButton: this.getButton("restart"),
     };
 
-    this.adManager = adManager;
+    this.adControls = adControls;
     this.bindUi();
-    this.adManager.showBanner();
+    this.adControls.showBanner();
   }
 
   private bindUi(): void {
@@ -78,7 +83,7 @@ export class Game {
 
     this.resetRound();
     this.input.enable();
-    this.adManager.hideBanner();
+    this.adControls.hideBanner();
     this.running = true;
     this.loop();
   }
@@ -103,6 +108,7 @@ export class Game {
     this.hideElement(this.elements.warning);
     this.hideElement(this.elements.startButton);
     this.hideElement(this.elements.restartButton);
+    this.warningVisible = false;
   }
 
   private stop(): void {
@@ -118,7 +124,8 @@ export class Game {
     this.showElement(this.elements.over);
     this.showElement(this.elements.restartButton);
     this.hideElement(this.elements.warning);
-    this.adManager.showBanner();
+    this.warningVisible = false;
+    this.adControls.showBanner();
   }
 
   private loop = (): void => {
@@ -158,11 +165,7 @@ export class Game {
       }
     }
 
-    if (this.frame > 0 && this.frame < GAME_CONFIG.warningFrames) {
-      this.showElement(this.elements.warning);
-    } else {
-      this.hideElement(this.elements.warning);
-    }
+    this.setWarningVisible(this.frame > 0 && this.frame < GAME_CONFIG.warningFrames);
   }
 
   private render(): void {
@@ -245,6 +248,20 @@ export class Game {
 
   private hideElement(element: HTMLElement): void {
     element.classList.remove("is-visible");
+  }
+
+  private setWarningVisible(visible: boolean): void {
+    if (this.warningVisible === visible) {
+      return;
+    }
+
+    this.warningVisible = visible;
+    if (visible) {
+      this.showElement(this.elements.warning);
+      return;
+    }
+
+    this.hideElement(this.elements.warning);
   }
 
   private bindPress(button: HTMLButtonElement, handler: () => void): void {

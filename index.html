@@ -9,14 +9,35 @@
     />
     <meta name="theme-color" content="#73d8ff" />
     <link rel="icon" type="image/png" href="/assets/speeder.png" />
-    <meta name="google-adsense-account" content="ca-pub-5320668606266595">
+    <link rel="preload" as="image" href="/assets/layer2.png" fetchpriority="high" />
+    <link rel="preload" as="image" href="/assets/player.png" fetchpriority="high" />
+    <meta name="google-adsense-account" content="ca-pub-5320668606266595" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&display=swap"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&display=swap"
+      />
+    </noscript>
     <style>
-      @import url("https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&display=swap");
+      html {
+        height: 100%;
+      }
       html,
       body {
         margin: 0;
+        height: 100%;
+        min-height: 100svh;
         background: #73d8ff;
         color: #0d2c54;
+        overflow: hidden;
       }
     </style>
     <title>Rainbow Dash Run</title>
@@ -30,7 +51,7 @@
 
       <section class="game-card" aria-label="Game area">
         <div id="container">
-          <canvas id="canvas" aria-label="Game canvas"></canvas>
+          <canvas id="canvas" width="800" height="380" aria-label="Game canvas"></canvas>
           <div id="cover"></div>
           <div id="title" class="is-visible">Rainbow Dash Run</div>
           <div id="over">Oops! Let's Try Again</div>
@@ -50,7 +71,6 @@
 
       <noscript>This game needs JavaScript enabled to run.</noscript>
     </main>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5320668606266595" crossorigin="anonymous"></script>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

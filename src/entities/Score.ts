@@ -24,8 +24,7 @@ export class Score {
 
   update(obstacles: Obstacle[], playerX: number): void {
     for (const obstacle of obstacles) {
-      const distancePlayerObstacle = playerX - Math.floor(obstacle.x + obstacle.scaledW);
-      if (distancePlayerObstacle > 0 && !obstacle.hasPassed) {
+      if (playerX > obstacle.x + obstacle.scaledW && !obstacle.hasPassed) {
         this.value += 1;
         obstacle.hasPassed = true;
         this.persistHighScoreIfNeeded();

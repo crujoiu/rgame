@@ -1,3 +1,5 @@
+import { getCachedImage } from "../core/AssetCache";
+
 export class Background {
   private x: number;
   private readonly y: number;
@@ -8,8 +10,7 @@ export class Background {
     this.x = x;
     this.y = y;
     this.speed = speed;
-    this.image = new Image();
-    this.image.src = path;
+    this.image = getCachedImage(path);
   }
 
   reset(): void {
