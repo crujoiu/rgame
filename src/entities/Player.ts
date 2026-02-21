@@ -3,6 +3,7 @@ import { Hitbox, Obstacle } from "./Obstacle";
 import { SpriteSheet } from "./SpriteSheet";
 
 const JUMP_VELOCITY = -12.2;
+const DOUBLE_TAP_BOOST_VELOCITY = -14.8;
 const GRAVITY = 0.58;
 const MAX_FALL_SPEED = 13;
 
@@ -18,6 +19,7 @@ export class Player {
   private anim: Animation;
   private velocityY = 0;
   private onGround = true;
+  private canUseDoubleTapBoost = false;
 
   constructor(posX: number, posY: number, private readonly groundY: number) {
     this.posX = posX;
@@ -34,16 +36,25 @@ export class Player {
     this.posY = this.groundY;
     this.velocityY = 0;
     this.onGround = true;
+    this.canUseDoubleTapBoost = false;
     this.anim = this.runAnim;
   }
 
-  jump(): void {
-    if (!this.onGround) {
+  jump(doubleTap = false): void {
+    if (this.onGround) {
+      this.velocityY = JUMP_VELOCITY;
+      this.onGround = false;
+      this.canUseDoubleTapBoost = true;
+      this.anim = this.jumpAnim;
       return;
     }
 
-    this.velocityY = JUMP_VELOCITY;
-    this.onGround = false;
+    if (!doubleTap || !this.canUseDoubleTapBoost || this.velocityY >= 0) {
+      return;
+    }
+
+    this.velocityY = DOUBLE_TAP_BOOST_VELOCITY;
+    this.canUseDoubleTapBoost = false;
     this.anim = this.jumpAnim;
   }
 
@@ -60,6 +71,7 @@ export class Player {
         this.posY = this.groundY;
         this.velocityY = 0;
         this.onGround = true;
+        this.canUseDoubleTapBoost = false;
         this.anim = this.runAnim;
       }
     }

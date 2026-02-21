@@ -48,7 +48,7 @@ export class Game {
       GAME_CONFIG.playerStartY,
     );
     this.score = new Score(670, 35);
-    this.input = new Input(this.renderer.canvas, () => this.player.jump());
+    this.input = new Input(this.renderer.canvas, (doubleTap) => this.player.jump(doubleTap));
 
     this.elements = {
       cover: this.getElement("cover"),
