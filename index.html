@@ -5,15 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Marathon Runner - a browser endless runner game built with TypeScript and Canvas."
+      content="Endless Runner - a browser endless runner game built with TypeScript and Canvas."
     />
     <meta name="theme-color" content="#d9e6f7" />
-    <title>Marathon Runner</title>
+    <title>Endless Runner</title>
   </head>
   <body>
     <main class="app-shell">
       <header class="game-header">
-        <h1>Marathon Runner</h1>
+        <h1>Endless Runner</h1>
         <p>Endless runner challenge. Press Space or tap to jump. Double-tap to jump higher.</p>
       </header>
 
@@ -21,19 +21,19 @@
         <div id="container">
           <canvas id="canvas" aria-label="Game canvas"></canvas>
           <div id="cover"></div>
-          <div id="title">Marathon Runner</div>
+          <div id="title" class="is-visible">Endless Runner</div>
           <div id="over">Game Over</div>
-          <p id="warning">Press SPACE or TAP to JUMP. DOUBLE-TAP to jump higher...</p>
+          <p id="warning" class="is-visible">
+            Press SPACE or TAP to JUMP. DOUBLE-TAP or DOUBLE-SPACE to jump higher.
+          </p>
           <div id="menu">
             <button class="button is-visible" id="start">Start Game</button>
             <button class="button" id="restart">Restart</button>
           </div>
         </div>
       </section>
-      <p class="meta">Built with TypeScript + Vite</p>
       <noscript>This game needs JavaScript enabled to run.</noscript>
     </main>
-
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

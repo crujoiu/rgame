@@ -1,6 +1,9 @@
 :root {
   color: #111;
   font-family: Cambria, Georgia, serif;
+  --game-width: 800;
+  --game-height: 380;
+  --game-aspect: calc(var(--game-width) / var(--game-height));
 }
 
 * {
@@ -10,7 +13,8 @@
 body {
   margin: 0;
   min-height: 100vh;
-  background: radial-gradient(circle at top, #f7f8ff 0%, #d9e6f7 55%, #cddbf0 100%);
+  background: #000;
+  overflow: hidden;
 }
 
 .app-shell {
@@ -19,11 +23,17 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 14px;
-  padding: 24px;
+  gap: 0;
+  padding: 0;
   text-align: center;
   width: 100%;
+  height: 100dvh;
   margin: 0 auto;
+}
+
+.game-header,
+.meta {
+  display: none;
 }
 
 .game-header h1 {
@@ -38,12 +48,13 @@ body {
 }
 
 .game-card {
-  background: rgba(255, 255, 255, 0.42);
-  border: 1px solid rgba(22, 59, 95, 0.2);
-  border-radius: 12px;
-  padding: 10px;
-  backdrop-filter: blur(3px);
-  width: min(calc(100vw - 48px), 1360px);
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  backdrop-filter: none;
+  width: min(100vw, calc(100dvh * var(--game-aspect)));
+  height: min(100dvh, calc(100vw / var(--game-aspect)));
 }
 
 .meta {
@@ -54,12 +65,12 @@ body {
 
 #container {
   width: 100%;
-  aspect-ratio: 800 / 380;
+  height: 100%;
   position: relative;
-  background-color: ghostwhite;
+  background-color: #000;
   margin: 0 auto;
   overflow: hidden;
-  border-radius: 8px;
+  border-radius: 0;
   touch-action: manipulation;
 }
 
@@ -69,7 +80,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  border: 1px solid #000;
+  border: 0;
   z-index: 1;
 }
 
@@ -99,17 +110,17 @@ body {
 }
 
 #title {
-  display: none;
   position: absolute;
-  top: 60px;
+  top: 18%;
   left: 50%;
   transform: translateX(-50%);
-  width: 260px;
-  height: 60px;
-  font-size: 22px;
+  width: 90%;
+  font-size: clamp(1.2rem, 4vw, 2rem);
   font-weight: bold;
-  color: darkblue;
+  color: #ffffff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.65);
   text-align: center;
+  pointer-events: none;
 }
 
 #over {
@@ -127,13 +138,14 @@ body {
 
 #warning {
   position: absolute;
-  color: darkred;
+  color: #f8f8f8;
   font-size: clamp(0.9rem, 2.6vw, 1.35rem);
-  top: 26%;
+  top: 32%;
   left: 50%;
   transform: translateX(-50%);
   width: 90%;
   text-align: center;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.65);
   pointer-events: none;
 }
 
@@ -190,53 +202,7 @@ body {
   transform: translate(-50%, -50%) scale(1);
 }
 
-@media (max-width: 1280px) {
-  .game-card {
-    width: min(calc(100vw - 36px), 1080px);
-  }
-}
-
-@media (max-width: 840px) {
-  .game-card {
-    width: min(calc(100vw - 16px), 820px);
-  }
-
-  .app-shell {
-    padding: 14px 10px;
-  }
-
-  .game-header h1 {
-    font-size: 1.45rem;
-  }
-
-  .game-header p {
-    font-size: 0.95rem;
-  }
-
-  .game-card {
-    padding: 8px;
-  }
-}
-
 @media (max-width: 520px) {
-  .app-shell {
-    gap: 10px;
-    padding: 10px 8px;
-  }
-
-  .game-header h1 {
-    font-size: 1.25rem;
-  }
-
-  .game-header p {
-    font-size: 0.86rem;
-    margin-top: 6px;
-  }
-
-  .meta {
-    font-size: 0.8rem;
-  }
-
   .button {
     border-radius: 8px;
   }

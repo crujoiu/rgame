@@ -49,7 +49,7 @@ export class Player {
       return;
     }
 
-    if (!doubleTap || !this.canUseDoubleTapBoost || this.velocityY >= 0) {
+    if (!doubleTap || !this.canUseDoubleTapBoost) {
       return;
     }
 
