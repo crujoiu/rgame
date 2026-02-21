@@ -175,7 +175,7 @@ body {
 #start {
   position: absolute;
   left: 50%;
-  top: 50%;
+  top: 64%;
   transform: translate(-50%, -50%) scale(0.98);
   width: 100px;
   height: 44px;
@@ -185,7 +185,7 @@ body {
 #restart {
   position: absolute;
   left: 50%;
-  top: 50%;
+  top: 52%;
   transform: translate(-50%, -50%) scale(0.98);
   width: 112px;
   height: 46px;
