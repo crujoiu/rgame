@@ -1,11 +1,11 @@
 import { gzipSync, brotliCompressSync, constants as zlibConstants } from "node:zlib";
 import { readdir, readFile, stat, writeFile } from "node:fs/promises";
 import { join } from "node:path";
-import { defineConfig, type Plugin } from "vite";
+import { defineConfig } from "vite";
 
 const SHOULD_COMPRESS_EXTENSIONS = new Set([".js", ".css", ".html", ".svg", ".json", ".txt"]);
 
-const hasCompressibleExtension = (filePath: string): boolean => {
+const hasCompressibleExtension = (filePath) => {
   for (const extension of SHOULD_COMPRESS_EXTENSIONS) {
     if (filePath.endsWith(extension)) {
       return true;
@@ -14,7 +14,7 @@ const hasCompressibleExtension = (filePath: string): boolean => {
   return false;
 };
 
-const walkFiles = async (directory: string): Promise<string[]> => {
+const walkFiles = async (directory) => {
   const entries = await readdir(directory);
   const files = await Promise.all(
     entries.map(async (entry) => {
@@ -29,7 +29,7 @@ const walkFiles = async (directory: string): Promise<string[]> => {
   return files.flat();
 };
 
-const precompressBuildOutput = (): Plugin => ({
+const precompressBuildOutput = () => ({
   name: "precompress-build-output",
   apply: "build",
   async closeBundle() {
