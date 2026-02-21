@@ -241,15 +241,26 @@ export class Game {
   }
 
   private bindPress(button: HTMLButtonElement, handler: () => void): void {
-    button.addEventListener("click", handler, false);
-    button.addEventListener("pointerup", handler, false);
     button.addEventListener(
-      "touchend",
-      (event: TouchEvent) => {
+      "pointerdown",
+      (event: PointerEvent) => {
         event.preventDefault();
         handler();
       },
-      { passive: false },
+      false,
+    );
+
+    button.addEventListener(
+      "click",
+      (event: MouseEvent) => {
+        // Fallback for browsers that do not support Pointer Events.
+        if (window.PointerEvent) {
+          return;
+        }
+        event.preventDefault();
+        handler();
+      },
+      false,
     );
   }
 }
