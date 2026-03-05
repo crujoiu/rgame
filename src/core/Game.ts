@@ -38,6 +38,7 @@ export class Game {
   private nextObstacleDistance: number = GAME_CONFIG.obstacleMinDist;
   private lastPressAt = 0;
   private warningVisible = false;
+  private hasStartedRound = false;
 
   constructor(private readonly renderer: Renderer, adControls: AdControls) {
     this.background = new Background("/assets/layer2.png", 0, 0, GAME_CONFIG.backgroundSpeed);
@@ -69,7 +70,7 @@ export class Game {
 
     this.adControls = adControls;
     this.bindUi();
-    this.adControls.showBanner();
+    this.adControls.hideBanner();
   }
 
   private bindUi(): void {
@@ -85,6 +86,7 @@ export class Game {
     this.resetRound();
     this.input.enable();
     this.adControls.hideBanner();
+    this.hasStartedRound = true;
     this.running = true;
     this.lastFrameTime = performance.now();
     this.animationFrameId = window.requestAnimationFrame(this.loop);
@@ -127,7 +129,9 @@ export class Game {
     this.showElement(this.elements.restartButton);
     this.hideElement(this.elements.warning);
     this.warningVisible = false;
-    this.adControls.showBanner();
+    if (this.hasStartedRound) {
+      this.adControls.showBanner();
+    }
   }
 
   private loop = (now: number): void => {
